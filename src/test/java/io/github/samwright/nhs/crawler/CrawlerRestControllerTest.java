@@ -20,12 +20,13 @@ public class CrawlerRestControllerTest {
     @InjectMocks
     private CrawlerRestController controller;
 
-    private CrawlerStatus status = new CrawlerStatus().setStartTime("a long time ago");
+    private CrawlerStatus status = new CrawlerStatus();
 
     private int runCount = 0, shutdownCount = 0;
 
     @Before
     public void setUp() throws Exception {
+        status.setStartTime("a long time ago");
         when(runner.getStatus()).thenReturn(status);
         doAnswer(inv -> ++runCount).when(runner).run();
         doAnswer(inv -> ++shutdownCount).when(runner).stop();

@@ -24,7 +24,7 @@ public class CrawlerTest {
     private static final String URL = "http://www.nhs.uk/conditions/something.aspx";
 
     @Mock
-    private CrawledPageWriter pageWriter;
+    private CrawledPageDao pageDao;
 
     @InjectMocks
     private Crawler crawler;
@@ -63,27 +63,27 @@ public class CrawlerTest {
     public void testVisit() throws Exception {
         crawler.visit(page);
         CrawledPage expected = new CrawledPage().setContent(ALL_TEXT).setTitle(TITLE).setUrl(URL);
-        verify(pageWriter).write(expected);
+        verify(pageDao).write(expected);
     }
 
     @Test
     public void testVisitIndexPage() throws Exception {
         when(page.getWebURL()).thenReturn(newUrl("http://www.nhs.uk/conditions/Pages"));
         crawler.visit(page);
-        verify(pageWriter, never()).write(any());
+        verify(pageDao, never()).write(any());
     }
 
     @Test
     public void testVisitNonHtmlPage() throws Exception {
         when(page.getContentType()).thenReturn("application/pdf");
         crawler.visit(page);
-        verify(pageWriter, never()).write(any());
+        verify(pageDao, never()).write(any());
     }
 
     @Test
     public void testVisitButCannotWritePage() throws Exception {
         // Exception swallowed and logged so crawl can continue
-        doThrow(new IOException()).when(pageWriter).write(any());
+        doThrow(new IOException()).when(pageDao).write(any());
         crawler.visit(page);
     }
 }

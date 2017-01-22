@@ -1,11 +1,9 @@
 package io.github.samwright.nhs.crawler;
 
+import io.github.samwright.nhs.util.JobStatus;
 import lombok.Data;
 
 @Data
-public class CrawlerStatus {
-    private String startTime, stopTime;
-    private boolean isRunning;
+public class CrawlerStatus extends JobStatus {
     private long runningUrlCount;
-    private Exception exception;
 }

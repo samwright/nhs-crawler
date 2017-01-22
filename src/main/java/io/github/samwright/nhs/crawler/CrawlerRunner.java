@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Provider;
-import java.time.LocalDateTime;
 
 @Component
 public class CrawlerRunner {
@@ -30,7 +29,7 @@ public class CrawlerRunner {
         controller = controllerProvider.get();
 
         // Reset status
-        status.setStartTime(LocalDateTime.now().toString()).setStopTime(null).setRunning(true).setException(null);
+        status.setStarted();
         try {
             // Start crawler
             controller.start(crawlerProvider::get, crawlerCount);
@@ -39,7 +38,7 @@ public class CrawlerRunner {
             status.setException(e);
         } finally {
             // Update the status that it has stopped
-            status.setRunning(false).setStopTime(LocalDateTime.now().toString());
+            status.setStopped();
         }
     }
 

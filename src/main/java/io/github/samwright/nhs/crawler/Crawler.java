@@ -22,7 +22,7 @@ public class Crawler extends WebCrawler {
     private static final Predicate<String> IS_INDEX_PAGE = Pattern.compile("/(c|C)onditions/(p|P)ages.*").asPredicate();
 
     @Autowired
-    private CrawledPageWriter pageWriter;
+    private CrawledPageDao pageDao;
 
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
@@ -46,7 +46,7 @@ public class Crawler extends WebCrawler {
         // Write page to file (as json)
         try {
             Document doc = Jsoup.parse(new String(page.getContentData()));
-            pageWriter.write(new CrawledPage()
+            pageDao.write(new CrawledPage()
                     .setUrl(page.getWebURL().toString())
                     .setContent(doc.text())
                     .setTitle(doc.title()));
