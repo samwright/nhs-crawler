@@ -80,20 +80,22 @@ public class PageIndexer {
      * Index all crawled pages.
      */
     public void recreateIndex() {
-        try (SearchHelper searchHelper = searchHelperProvider.get()) {
-            log.info("Starting to index");
-            status.setStarted();
+        // Reset status
+        status.setStarted();
+        log.info("Starting to index");
 
+        try (SearchHelper searchHelper = searchHelperProvider.get()) {
             // Delete all docs from the index
             searchHelper.deleteAllDocs();
 
             // Add all crawled pages to the index
             searchHelper.addDocumentsToIndex(crawledPageDao.readAllPages().map(this::createDoc));
-            log.info("Finished indexing");
         } catch (Exception e) {
             status.setException(e);
+            log.info("Indexer encountered exception", e);
         } finally {
             status.setStopped();
+            log.info("Indexing finished");
         }
     }
 
