@@ -1,0 +1,40 @@
+<p>
+<title>NHS Crawler - Sam Wright</title>
+<h3>Web app for crawling and searching the NHS Choices website's conditions pages.</h3>
+<p>
+    Here is the API:
+    <ul>
+        <li>
+            <a href="/crawler/start">/crawler/start</a> to start crawling the website. This will
+            take days to complete. You can stop the crawler and/or restart the
+            app, then start the crawler again and it will resume from where it
+            stopped. See the log output or <a href="/crawler/status">/crawler/status</a> to monitor its
+            progress.
+        </li>
+        <li>
+            <a href="/crawler/status">/crawler/status</a> to get the status of the crawler (as a json string
+            of io.github.samwright.nhs.crawler.CrawlerStatus).
+        </li>
+        <li><a href="/crawler/stop">/crawler/stop</a> to stop the crawler if it was running</li>
+        <li>
+            <a href="/search/index">/search/index</a> to recreate the index from the crawled pages. This can
+            be called at any time, even while the crawler is running. This
+            takes about a minute to complete, and its progress can be monitored
+            at <a href="/search/status">/search/status</a>.
+        </li>
+        <li>
+            <a href="/search/status">/search/status</a> to get the status of the indexer (as a json string of
+            io.github.samwright.nhs.search.IndexingStatus).
+        </li>
+        <li>
+            <a href="/search?q=mumps">/search?q=mumps</a> to search through the indexed pages for 'mumps' to get the
+            best match, and return its NHS Choices URL.
+        </li>
+        <li>
+            <a href="/search/multiple?q=mumps">/search/multiple?q=mumps</a> to search through the indexed pages for
+            'mumps' to get multiple top matches (at most 10), and return them in order in a json string of a
+            list of io.github.samwright.nhs.search.SearchResult.
+        </li>
+    </ul>
+</p>
+</html>
