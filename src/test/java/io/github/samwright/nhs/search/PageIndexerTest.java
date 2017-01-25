@@ -3,6 +3,7 @@ package io.github.samwright.nhs.search;
 import io.github.samwright.nhs.crawler.CrawledPage;
 import io.github.samwright.nhs.crawler.CrawledPageDao;
 import org.apache.lucene.index.IndexableField;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,17 +47,27 @@ public class PageIndexerTest {
         when(crawledPageDao.readAllPages()).thenReturn(Stream.of(page));
         when(searchHelperProvider.get()).thenReturn(searchHelper);
         when(searchHelper.getIndexSize()).thenReturn(DOCS_COUNT);
+        indexer.setIndexIntervalSeconds(1);
+        indexer.init();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        indexer.destroy();
     }
 
     @Test
     public void testIndex() throws Exception {
-        indexer.index();
+        indexer.recreateIndex();
 
         InOrder inOrder = inOrder(searchHelper);
         inOrder.verify(searchHelper).deleteAllDocs();
         inOrder.verify(searchHelper).addDocumentsToIndex(docsCaptor.capture());
         inOrder.verify(searchHelper).close();
+        checkIndexedDocIsPage();
+    }
 
+    private void checkIndexedDocIsPage() {
         Iterable<? extends IndexableField> doc = docsCaptor.getValue().findFirst().get();
         assertThat(doc).hasSize(3);
         assertThat(doc).filteredOn("name", SearchConfig.URL_FIELD)
@@ -75,7 +86,7 @@ public class PageIndexerTest {
         IOException exception = new IOException();
         doThrow(exception).when(searchHelper).deleteAllDocs();
 
-        indexer.index();
+        indexer.recreateIndex();
 
         verify(searchHelper).close();
         IndexingStatus status = indexer.getStatus();
@@ -107,7 +118,7 @@ public class PageIndexerTest {
         }).when(searchHelper).addDocumentsToIndex(any());
 
         LocalDateTime beforeIndexing = nowWithPadding();
-        indexer.index();
+        indexer.recreateIndex();
         LocalDateTime afterIndexing = nowWithPadding();
         IndexingStatus status = indexer.getStatus();
 
@@ -123,5 +134,21 @@ public class PageIndexerTest {
         LocalDateTime now = LocalDateTime.now();
         Thread.sleep(1);
         return now;
+    }
+
+    @Test
+    public void testIndexSoon() throws Exception {
+        indexer.indexSoon(page);
+        verify(searchHelper, timeout(5000).atLeastOnce()).addDocumentsToIndex(docsCaptor.capture());
+        checkIndexedDocIsPage();
+    }
+
+    @Test
+    public void testIndexSoonExceptionIsSwallowed() throws Exception {
+        // Real-time indexing is done on a best-efforts basis, and we don't want an errant page
+        // stopping the indexing from running, so the exception is swallowed and logged.
+        doThrow(new IOException()).when(searchHelper).addDocumentsToIndex(docsCaptor.capture());
+        indexer.indexSoon(page);
+        Thread.sleep(100);
     }
 }

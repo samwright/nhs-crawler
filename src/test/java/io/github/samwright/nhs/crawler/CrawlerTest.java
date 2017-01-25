@@ -2,6 +2,7 @@ package io.github.samwright.nhs.crawler;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.url.WebURL;
+import io.github.samwright.nhs.search.PageIndexer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,9 @@ public class CrawlerTest {
 
     @Mock
     private CrawledPageDao pageDao;
+
+    @Mock
+    private PageIndexer pageIndexer;
 
     @InjectMocks
     private Crawler crawler;
@@ -64,6 +68,7 @@ public class CrawlerTest {
         crawler.visit(page);
         CrawledPage expected = new CrawledPage().setContent(ALL_TEXT).setTitle(TITLE).setUrl(URL);
         verify(pageDao).write(expected);
+        verify(pageIndexer).indexSoon(expected);
     }
 
     @Test
@@ -71,6 +76,7 @@ public class CrawlerTest {
         when(page.getWebURL()).thenReturn(newUrl("http://www.nhs.uk/conditions/Pages"));
         crawler.visit(page);
         verify(pageDao, never()).write(any());
+        verify(pageIndexer, never()).indexSoon(any());
     }
 
     @Test
@@ -78,6 +84,7 @@ public class CrawlerTest {
         when(page.getContentType()).thenReturn("application/pdf");
         crawler.visit(page);
         verify(pageDao, never()).write(any());
+        verify(pageIndexer, never()).indexSoon(any());
     }
 
     @Test

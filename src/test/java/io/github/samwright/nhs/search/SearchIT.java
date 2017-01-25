@@ -38,7 +38,7 @@ public class SearchIT {
         loadCrawledPage("2.json");
         loadCrawledPage("3.json");
         loadCrawledPage("4.json");
-        restTemplate.getForObject("/search/index", String.class);
+        assertThat(restTemplate.getForObject("/search/reindex", String.class)).isEqualTo("now reindexing");
         Thread.sleep(1000);
         while (restTemplate.getForObject("/search/status", IndexingStatus.class).isRunning()) {
             Thread.sleep(1000);

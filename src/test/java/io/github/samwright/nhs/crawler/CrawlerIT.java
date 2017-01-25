@@ -1,5 +1,6 @@
 package io.github.samwright.nhs.crawler;
 
+import io.github.samwright.nhs.search.IndexingStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class CrawlerIT {
             Thread.sleep(1000);
         }
         assertThat(getStatus().getRunningUrlCount()).isBetween(8L, 10L);
+
+        // Wait for the index to be automatically updated
+        while (restTemplate.getForObject("/search/status", IndexingStatus.class).getSize() == 0) {
+            Thread.sleep(1000);
+        }
     }
 
     private CrawlerStatus getStatus() {

@@ -43,7 +43,7 @@ public class SearchRestControllerTest {
     public void setUp() throws Exception {
         status.setStartTime("a long time ago");
         when(indexer.getStatus()).thenReturn(status);
-        doAnswer(inv -> ++indexCount).when(indexer).index();
+        doAnswer(inv -> ++indexCount).when(indexer).recreateIndex();
         when(searchHelperProvider.get()).thenReturn(searchHelper);
         when(searchHelper.search(QUERY)).thenReturn(Lists.newArrayList(firstResult, secondResult));
     }
@@ -55,7 +55,7 @@ public class SearchRestControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        assertThat(controller.index()).isEqualTo("now indexing");
+        assertThat(controller.reindex()).isEqualTo("now reindexing");
         Thread.sleep(100);
         assertThat(indexCount).isEqualTo(1);
     }
@@ -63,7 +63,7 @@ public class SearchRestControllerTest {
     @Test
     public void testAlreadyIndexing() throws Exception {
         status.setRunning(true);
-        assertThat(controller.index()).isEqualTo("already indexing");
+        assertThat(controller.reindex()).isEqualTo("already reindexing");
         Thread.sleep(100);
         assertThat(indexCount).isEqualTo(0);
     }

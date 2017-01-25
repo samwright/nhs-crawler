@@ -28,13 +28,13 @@ public class SearchRestController {
         executor.shutdown();
     }
 
-    @RequestMapping("/search/index")
-    public String index() throws IOException {
+    @RequestMapping("/search/reindex")
+    public String reindex() throws IOException {
         if (indexer.getStatus().isRunning()) {
-            return "already indexing";
+            return "already reindexing";
         } else {
-            executor.submit(indexer::index);
-            return "now indexing";
+            executor.submit(indexer::recreateIndex);
+            return "now reindexing";
         }
     }
 

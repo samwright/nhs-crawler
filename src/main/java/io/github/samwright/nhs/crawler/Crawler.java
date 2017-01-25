@@ -3,6 +3,7 @@ package io.github.samwright.nhs.crawler;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
+import io.github.samwright.nhs.search.PageIndexer;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +25,9 @@ public class Crawler extends WebCrawler {
     @Autowired
     private CrawledPageDao pageDao;
 
+    @Autowired
+    private PageIndexer pageIndexer;
+
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         return url.getDomain().equals("www.nhs.uk") && PATH_FILTER.test(url.getPath());
@@ -43,13 +47,19 @@ public class Crawler extends WebCrawler {
             return;
         }
 
-        // Write page to file (as json)
         try {
             Document doc = Jsoup.parse(new String(page.getContentData()));
-            pageDao.write(new CrawledPage()
+            CrawledPage crawledPage = new CrawledPage()
                     .setUrl(page.getWebURL().toString())
                     .setContent(doc.text())
-                    .setTitle(doc.title()));
+                    .setTitle(doc.title());
+
+            // Write page to file (as json)
+            pageDao.write(crawledPage);
+
+            // Add page to be indexed soon
+            pageIndexer.indexSoon(crawledPage);
+
             log.info("Crawler visited: {}", page.getWebURL());
         } catch (IOException e) {
             log.warn("Problem writing page {}", page.getWebURL(), e);

@@ -2,14 +2,14 @@
 <title>NHS Crawler - Sam Wright</title>
 <h3>Web app for crawling and searching the NHS Choices website's conditions pages.</h3>
 <p>
-    Here is the API:
+    <h4>The API</h4>
     <ul>
         <li>
             <a href="/crawler/start">/crawler/start</a> to start crawling the website. This will
             take days to complete. You can stop the crawler and/or restart the
             app, then start the crawler again and it will resume from where it
             stopped. See the log output or <a href="/crawler/status">/crawler/status</a> to monitor its
-            progress.
+            progress. Newly-crawled pages are added to the index for searching every 10 seconds.
         </li>
         <li>
             <a href="/crawler/status">/crawler/status</a> to get the status of the crawler (as a json string
@@ -17,10 +17,10 @@
         </li>
         <li><a href="/crawler/stop">/crawler/stop</a> to stop the crawler if it was running</li>
         <li>
-            <a href="/search/index">/search/index</a> to recreate the index from the crawled pages. This can
-            be called at any time, even while the crawler is running. This
-            takes about a minute to complete, and its progress can be monitored
-            at <a href="/search/status">/search/status</a>.
+            <a href="/search/reindex">/search/reindex</a> to recreate the index from the crawled pages on disk. This
+            can be called at any time, even while the crawler is running. This takes about a minute to complete, and
+            its progress can be monitored at <a href="/search/status">/search/status</a>. You only need to do this if
+            you copy json files yourself into the pages directory.
         </li>
         <li>
             <a href="/search/status">/search/status</a> to get the status of the indexer (as a json string of
