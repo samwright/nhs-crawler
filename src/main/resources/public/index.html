@@ -37,4 +37,54 @@
         </li>
     </ul>
 </p>
+<p>
+    <h4>Quickstart</h4>
+    <ol>
+        <li>Click <a href="/crawler/start">/crawler/start</a></li>
+        <li>
+            Click <a href="/search?q=mumps">/search?q=mumps</a> and try different queries. Newly-crawled pages will
+            be searchable after at most a 10 second delay.
+        </li>
+        <li>
+            Restart the app at any time and click <a href="/crawler/start">/crawler/start</a> to continue crawling
+            from where it left off.
+        </li>
+    </ol>
+</p>
+<p>
+    <h4>Options</h4>
+    <ul>
+        <li>
+            maxPagesPerCrawl - maximum number of pages to crawl, useful for testing (default = -1, meaning
+            no maximum).
+        </li>
+        <li>crawlerCount - number of crawlers to run concurrently (default = 8).</li>
+        <li>
+            dataDir - directory to store crawled pages, crawler metadata, and the lucene index. If not set,
+            this will default to "${java.io.tmpdir}/io.github.samwright.nhs", unless you set...
+        </li>
+        <li>
+            randomiseTmpDir - if true and dataDir hasn't been set, store data in
+            "${java.io.tmpdir}/io.github.samwright.nhs${randomLong}". Useful for testing.
+        </li>
+        <li>
+            deleteOnExit - if true, delete the data directory on exitting the app (default = false)
+        </li>
+        <li>
+            indexIntervalSeconds - the time to wait before adding newly-crawled pages to the index.
+        </li>
+    </ul>
+</p>
+<p>
+    <h4>Command-line usage: java -jar nhs-crawler-0.1.0-SNAPSHOT.jar [--option=value]...</h4>
+
+</p>
+<h5>Author: Sam Wright</h5>
+<h5>
+    Uses:
+    <a href="https://lucene.apache.org/">Apache Lucene</a>,
+    <a href="https://projects.spring.io/spring-boot/">Spring Boot</a>,
+    <a href="https://github.com/yasserg/crawler4j">Crawler4J</a>,
+    <a href="https://jsoup.org/">jsoup</a>.
+</h5>
 </html>
