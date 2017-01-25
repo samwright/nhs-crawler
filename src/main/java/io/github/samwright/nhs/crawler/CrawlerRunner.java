@@ -19,7 +19,7 @@ public class CrawlerRunner {
 
     private CrawlController controller;
 
-    @Value("${crawlerCount:5}") @Setter
+    @Value("${crawlerCount:8}") @Setter
     private int crawlerCount;
 
     private CrawlerStatus status = new CrawlerStatus();

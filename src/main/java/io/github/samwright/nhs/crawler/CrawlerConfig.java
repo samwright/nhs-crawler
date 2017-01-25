@@ -28,6 +28,8 @@ public class CrawlerConfig {
         config.setMaxPagesToFetch(maxPagesPerCrawl);
         config.setCrawlStorageFolder(dirHelper.createSubFolder("crawl").toString());
         config.setResumableCrawling(true);
+        config.setPolitenessDelay(10);
+        config.setUserAgentString("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
