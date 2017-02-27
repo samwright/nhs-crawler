@@ -1,5 +1,6 @@
 package io.github.samwright.nhs.search;
 
+import io.github.samwright.nhs.common.search.SearchResult;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.lucene.document.Document;

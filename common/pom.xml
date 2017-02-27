@@ -10,4 +10,11 @@
 	<artifactId>common</artifactId>
 	<name>NHS Choices website crawler and searcher - API</name>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-feign</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>

@@ -2,6 +2,7 @@ package io.github.samwright.nhs.search;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import io.github.samwright.nhs.common.search.SearchResult;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Field;

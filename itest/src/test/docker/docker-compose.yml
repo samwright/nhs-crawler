@@ -10,3 +10,13 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
+
+  eureka:
+    image: io.github.samwright.nhs/eureka:@project.version@
+    ports:
+      - "8761"
+    healthcheck:
+          test: ["CMD", "curl", "-f", "http://localhost:8761/eureka/apps/NHS-SERVICE"]
+          interval: 1m
+          timeout: 10s
+          retries: 3

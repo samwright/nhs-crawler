@@ -1,4 +1,4 @@
-package io.github.samwright.nhs.search;
+package io.github.samwright.nhs.common.search;
 
 import lombok.Data;
 

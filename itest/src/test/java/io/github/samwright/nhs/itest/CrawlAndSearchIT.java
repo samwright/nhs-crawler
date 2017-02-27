@@ -23,8 +23,8 @@ public class CrawlAndSearchIT {
     @Rule
     public DockerComposeRule docker = DockerComposeRule.builder()
             .file("target/test-classes/docker-compose.yml")
-            .waitingForService("crawler", HealthChecks.toRespond2xxOverHttp(
-                    8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/crawler/status")))
+            .waitingForService("eureka", HealthChecks.toRespond2xxOverHttp(
+                    8761, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/eureka/apps/NHS-SERVICE")))
             .build();
 
     private RestTemplate restTemplate;
