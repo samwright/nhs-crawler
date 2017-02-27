@@ -1,7 +1,7 @@
 package io.github.samwright.nhs.search;
 
 import com.google.common.collect.ImmutableMap;
-import io.github.samwright.nhs.util.DirHelper;
+import io.github.samwright.nhs.common.util.DirHelper;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.index.IndexWriter;

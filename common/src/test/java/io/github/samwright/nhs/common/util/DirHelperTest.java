@@ -1,4 +1,4 @@
-package io.github.samwright.nhs.util;
+package io.github.samwright.nhs.common.util;
 
 import org.junit.Before;
 import org.junit.Rule;

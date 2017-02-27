@@ -1,7 +1,7 @@
 package io.github.samwright.nhs.crawler;
 
 import edu.uci.ics.crawler4j.crawler.CrawlController;
-import io.github.samwright.nhs.util.DirHelper;
+import io.github.samwright.nhs.common.util.DirHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

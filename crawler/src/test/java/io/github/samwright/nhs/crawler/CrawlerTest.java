@@ -1,7 +1,8 @@
 package io.github.samwright.nhs.crawler;
 
-import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.url.WebURL;
+import io.github.samwright.nhs.common.pages.Page;
+import io.github.samwright.nhs.common.pages.PagesClient;
 import io.github.samwright.nhs.search.PageIndexer;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.io.IOException;
+import org.springframework.web.client.RestClientException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -25,7 +25,7 @@ public class CrawlerTest {
     private static final String URL = "http://www.nhs.uk/conditions/something.aspx";
 
     @Mock
-    private CrawledPageDao pageDao;
+    private PagesClient pagesClient;
 
     @Mock
     private PageIndexer pageIndexer;
@@ -34,7 +34,7 @@ public class CrawlerTest {
     private Crawler crawler;
 
     @Mock
-    private Page page;
+    private edu.uci.ics.crawler4j.crawler.Page page;
 
     @Before
     public void setUp() throws Exception {
@@ -66,8 +66,8 @@ public class CrawlerTest {
     @Test
     public void testVisit() throws Exception {
         crawler.visit(page);
-        CrawledPage expected = new CrawledPage().setContent(ALL_TEXT).setTitle(TITLE).setUrl(URL);
-        verify(pageDao).write(expected);
+        Page expected = new Page().setContent(ALL_TEXT).setTitle(TITLE).setUrl(URL);
+        verify(pagesClient).create(expected);
         verify(pageIndexer).indexSoon(expected);
     }
 
@@ -75,7 +75,7 @@ public class CrawlerTest {
     public void testVisitIndexPage() throws Exception {
         when(page.getWebURL()).thenReturn(newUrl("http://www.nhs.uk/conditions/Pages"));
         crawler.visit(page);
-        verify(pageDao, never()).write(any());
+        verify(pagesClient, never()).create(any());
         verify(pageIndexer, never()).indexSoon(any());
     }
 
@@ -83,14 +83,14 @@ public class CrawlerTest {
     public void testVisitNonHtmlPage() throws Exception {
         when(page.getContentType()).thenReturn("application/pdf");
         crawler.visit(page);
-        verify(pageDao, never()).write(any());
+        verify(pagesClient, never()).create(any());
         verify(pageIndexer, never()).indexSoon(any());
     }
 
     @Test
     public void testVisitButCannotWritePage() throws Exception {
         // Exception swallowed and logged so crawl can continue
-        doThrow(new IOException()).when(pageDao).write(any());
+        doThrow(new RestClientException("")).when(pagesClient).create(any());
         crawler.visit(page);
     }
 }

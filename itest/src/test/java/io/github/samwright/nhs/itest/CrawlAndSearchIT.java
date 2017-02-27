@@ -5,6 +5,7 @@ import com.palantir.docker.compose.connection.waiting.HealthChecks;
 import io.github.samwright.nhs.common.crawler.CrawlerStatus;
 import io.github.samwright.nhs.common.search.IndexingStatus;
 import org.awaitility.Awaitility;
+import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +25,11 @@ public class CrawlAndSearchIT {
     public DockerComposeRule docker = DockerComposeRule.builder()
             .file("target/test-classes/docker-compose.yml")
             .waitingForService("eureka", HealthChecks.toRespond2xxOverHttp(
-                    8761, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/eureka/apps/NHS-SERVICE")))
+                    8761, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/eureka/apps/CRAWLER-APP")),
+                               Duration.standardMinutes(3L))
+            .waitingForService("eureka", HealthChecks.toRespond2xxOverHttp(
+                    8761, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/eureka/apps/PAGES-APP")),
+                               Duration.standardMinutes(3L))
             .build();
 
     private RestTemplate restTemplate;
@@ -38,13 +43,14 @@ public class CrawlAndSearchIT {
 
     @Test
     public void testCrawlAndSearch() throws Exception {
+        Thread.sleep(60000);
         // Crawl until at least 10 sites have been retrieved
         assertThat(restTemplate.getForObject("/crawler/start", String.class)).isEqualTo("crawler started");
-        Awaitility.await().atMost(15, TimeUnit.SECONDS).until(() -> getCrawlerStatus().getRunningUrlCount() > 10);
+        Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> getCrawlerStatus().getRunningUrlCount() > 10);
 
         // Reindex
         assertThat(restTemplate.getForObject("/search/reindex", String.class)).isEqualTo("now reindexing");
-        Awaitility.await().atMost(15, TimeUnit.SECONDS).until(() -> getIndexerStatus().getSize() > 0);
+        Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> getIndexerStatus().getSize() > 0);
 
         // Search for something that will definitely be in the index
         String searchResult = search("nhs");

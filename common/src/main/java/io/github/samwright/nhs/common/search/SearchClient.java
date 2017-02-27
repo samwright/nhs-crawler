@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "searcher", path = "/search")
+@FeignClient(name = "crawler-app", path = "/search")
 public interface SearchClient {
     @RequestMapping("/reindex")
     String reindex();

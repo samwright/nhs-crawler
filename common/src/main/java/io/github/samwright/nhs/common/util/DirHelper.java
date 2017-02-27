@@ -1,4 +1,4 @@
-package io.github.samwright.nhs.util;
+package io.github.samwright.nhs.common.util;
 
 import lombok.Getter;
 import lombok.Setter;

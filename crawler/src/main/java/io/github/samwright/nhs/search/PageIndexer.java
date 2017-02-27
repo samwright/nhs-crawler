@@ -1,9 +1,10 @@
 package io.github.samwright.nhs.search;
 
 import com.google.common.collect.Lists;
+import io.github.samwright.nhs.common.pages.Page;
+import io.github.samwright.nhs.common.pages.PageBatch;
+import io.github.samwright.nhs.common.pages.PagesClient;
 import io.github.samwright.nhs.common.search.IndexingStatus;
-import io.github.samwright.nhs.crawler.CrawledPage;
-import io.github.samwright.nhs.crawler.CrawledPageDao;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Field;
@@ -38,12 +39,12 @@ public class PageIndexer {
     private Provider<SearchHelper> searchHelperProvider;
 
     @Autowired
-    private CrawledPageDao crawledPageDao;
+    private PagesClient pagesClient;
 
     @Value("${indexIntervalSeconds:10}") @Setter
     private int indexIntervalSeconds;
 
-    private final ConcurrentLinkedQueue<CrawledPage> cachedPagesToIndex = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<Page> cachedPagesToIndex = new ConcurrentLinkedQueue<>();
 
     @PostConstruct
     public void init() {
@@ -73,7 +74,7 @@ public class PageIndexer {
     /**
      * @param page the page to add to the index soon.
      */
-    public void indexSoon(CrawledPage page) {
+    public void indexSoon(Page page) {
         cachedPagesToIndex.add(page);
     }
 
@@ -90,7 +91,12 @@ public class PageIndexer {
             searchHelper.deleteAllDocs();
 
             // Add all crawled pages to the index
-            searchHelper.addDocumentsToIndex(crawledPageDao.readAllPages().map(this::createDoc));
+            PageBatch batch = pagesClient.read();
+            searchHelper.addDocumentsToIndex(batch.getPages().stream().map(this::createDoc));
+            while (!batch.isLast()) {
+                batch = pagesClient.readNext(batch.getNextResult());
+                searchHelper.addDocumentsToIndex(batch.getPages().stream().map(this::createDoc));
+            }
         } catch (Exception e) {
             status.setException(e);
             log.info("Indexer encountered exception", e);
@@ -100,7 +106,7 @@ public class PageIndexer {
         }
     }
 
-    private List<? extends IndexableField> createDoc(CrawledPage page) {
+    private List<? extends IndexableField> createDoc(Page page) {
         return Lists.newArrayList(
                 new StringField(SearchConfig.URL_FIELD, page.getUrl(), Field.Store.YES),
                 new TextField(SearchConfig.TITLE_FIELD, page.getTitle(), Field.Store.YES),

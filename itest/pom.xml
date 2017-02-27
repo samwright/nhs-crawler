@@ -30,12 +30,14 @@
 		<dependency>
 			<groupId>io.github.samwright.nhs</groupId>
 			<artifactId>crawler</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.github.samwright.nhs</groupId>
 			<artifactId>eureka</artifactId>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.samwright.nhs</groupId>
+			<artifactId>pages</artifactId>
 		</dependency>
 	</dependencies>
 

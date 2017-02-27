@@ -1,8 +1,11 @@
-package io.github.samwright.nhs.crawler;
+package io.github.samwright.nhs.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Sets;
-import io.github.samwright.nhs.util.DirHelper;
+import com.google.common.collect.Lists;
+import io.github.samwright.nhs.common.pages.Page;
+import io.github.samwright.nhs.common.pages.PageBatch;
+import io.github.samwright.nhs.common.util.DirHelper;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,14 +16,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.nio.file.Path;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CrawledPageDaoTest {
+public class PagesRestControllerTest {
     @Rule
     public TemporaryFolder tempDir = new TemporaryFolder();
 
@@ -30,20 +33,20 @@ public class CrawledPageDaoTest {
     private DirHelper dirHelper;
 
     @InjectMocks
-    private CrawledPageDao dao;
+    private PagesRestController controller;
 
     @Before
     public void setUp() throws Exception {
         pagesDir = tempDir.getRoot().toPath();
         when(dirHelper.createSubFolder("pages")).thenReturn(pagesDir);
-        dao.init();
+        controller.init();
     }
 
     @Test
     public void testWrite() throws Exception {
-        CrawledPage page = new CrawledPage()
+        Page page = new Page()
                 .setContent("content").setUrl("http://www.nhs.uk/Some%20Thing").setTitle("title");
-        dao.write(page);
+        controller.create(page);
         assertThat(pagesDir.resolve("http_www_nhs_uk_some_thing.json").toFile())
                 .as("crawler file should exist and contain page information in the expected format")
                 .exists().isFile().hasContent(new ObjectMapper().writeValueAsString(page));
@@ -51,12 +54,18 @@ public class CrawledPageDaoTest {
 
     @Test
     public void testReadAllPages() throws Exception {
-        Set<CrawledPage> pages = Sets.newHashSet(
-                new CrawledPage().setContent("c1").setTitle("t1").setUrl("u1"),
-                new CrawledPage().setContent("c2").setTitle("t2").setUrl("u2"));
-        for (CrawledPage page : pages) {
-            dao.write(page);
+        List<Page> pages = Lists.newArrayList(
+                new Page().setContent("c1").setTitle("t1").setUrl("u1"),
+                new Page().setContent("c2").setTitle("t2").setUrl("u2"));
+        for (Page page : pages) {
+            controller.create(page);
         }
-        assertThat(dao.readAllPages().collect(Collectors.toSet())).isEqualTo(pages);
+
+        PageBatch batch = controller.read(Optional.empty(), Optional.empty());
+
+        Assertions.assertThat(batch.getPages()).isEqualTo(pages);
+        Assertions.assertThat(batch.isLast()).isTrue();
+        Assertions.assertThat(batch.getNextResult()).isNull();
+
     }
 }

@@ -1,8 +1,10 @@
 package io.github.samwright.nhs.search;
 
+import com.google.common.collect.Lists;
+import io.github.samwright.nhs.common.pages.Page;
+import io.github.samwright.nhs.common.pages.PageBatch;
+import io.github.samwright.nhs.common.pages.PagesClient;
 import io.github.samwright.nhs.common.search.IndexingStatus;
-import io.github.samwright.nhs.crawler.CrawledPage;
-import io.github.samwright.nhs.crawler.CrawledPageDao;
 import org.apache.lucene.index.IndexableField;
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +30,7 @@ public class PageIndexerTest {
     private Provider<SearchHelper> searchHelperProvider;
 
     @Mock
-    private CrawledPageDao crawledPageDao;
+    private PagesClient pagesClient;
 
     @InjectMocks
     private PageIndexer indexer;
@@ -39,13 +41,13 @@ public class PageIndexerTest {
     @Captor
     private ArgumentCaptor<Stream<Iterable<? extends IndexableField>>> docsCaptor;
 
-    private CrawledPage page = new CrawledPage().setUrl("URL").setTitle("TITLE").setContent("CONTENT");
+    private Page page = new Page().setUrl("URL").setTitle("TITLE").setContent("CONTENT");
 
     private LocalDateTime halfwayThroughIndexing;
 
     @Before
     public void setUp() throws Exception {
-        when(crawledPageDao.readAllPages()).thenReturn(Stream.of(page));
+        when(pagesClient.read()).thenReturn(new PageBatch().setPages(Lists.newArrayList(page)).setLast(true));
         when(searchHelperProvider.get()).thenReturn(searchHelper);
         when(searchHelper.getIndexSize()).thenReturn(DOCS_COUNT);
         indexer.setIndexIntervalSeconds(1);

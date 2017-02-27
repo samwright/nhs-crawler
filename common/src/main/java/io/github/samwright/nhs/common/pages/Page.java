@@ -1,9 +1,9 @@
-package io.github.samwright.nhs.crawler;
+package io.github.samwright.nhs.common.pages;
 
 import lombok.Data;
 
 @Data
-public class CrawledPage {
+public class Page {
     private String title;
     private String url;
     private String content;

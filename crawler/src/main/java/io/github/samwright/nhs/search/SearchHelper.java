@@ -56,6 +56,8 @@ public class SearchHelper implements Closeable, AutoCloseable {
 
     private IndexSearcher indexSearcher;
 
+    private boolean documentsChanged = false;
+
     /**
      * Search the index using the given query, and return the ${@value #MAX_RESULTS} top results.
      *
@@ -85,9 +87,8 @@ public class SearchHelper implements Closeable, AutoCloseable {
      * @throws IOException if there was a problem accessing the index.
      */
     public void deleteAllDocs() throws IOException {
+        documentsChanged = true;
         indexWriter.deleteAll();
-        indexWriter.commit();
-        searcherManager.maybeRefresh();
     }
 
     /**
@@ -95,9 +96,8 @@ public class SearchHelper implements Closeable, AutoCloseable {
      * @throws IOException
      */
     public void addDocumentsToIndex(Stream<Iterable<? extends IndexableField>> docs) throws IOException {
+        documentsChanged = true;
         docs.forEach(this::addDocumentToIndex);
-        indexWriter.commit();
-        searcherManager.maybeRefresh();
     }
 
     /**
@@ -112,6 +112,10 @@ public class SearchHelper implements Closeable, AutoCloseable {
     public void close() throws IOException {
         if (indexSearcher != null) {
             searcherManager.release(indexSearcher);
+        }
+        if (documentsChanged) {
+            indexWriter.commit();
+            searcherManager.maybeRefresh();
         }
     }
 

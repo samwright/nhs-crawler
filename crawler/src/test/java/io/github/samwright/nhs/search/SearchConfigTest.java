@@ -1,7 +1,6 @@
 package io.github.samwright.nhs.search;
 
-import io.github.samwright.nhs.util.DirHelper;
-import org.apache.lucene.index.IndexWriter;
+import io.github.samwright.nhs.common.util.DirHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
