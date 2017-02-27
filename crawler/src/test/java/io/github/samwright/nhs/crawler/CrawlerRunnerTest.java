@@ -2,6 +2,7 @@ package io.github.samwright.nhs.crawler;
 
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.frontier.Frontier;
+import io.github.samwright.nhs.common.crawler.CrawlerStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

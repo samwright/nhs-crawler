@@ -1,6 +1,7 @@
 package io.github.samwright.nhs.crawler;
 
-import io.github.samwright.nhs.search.IndexingStatus;
+import io.github.samwright.nhs.common.crawler.CrawlerStatus;
+import io.github.samwright.nhs.common.search.IndexingStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

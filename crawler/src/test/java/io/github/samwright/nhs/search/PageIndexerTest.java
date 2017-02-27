@@ -1,5 +1,6 @@
 package io.github.samwright.nhs.search;
 
+import io.github.samwright.nhs.common.search.IndexingStatus;
 import io.github.samwright.nhs.crawler.CrawledPage;
 import io.github.samwright.nhs.crawler.CrawledPageDao;
 import org.apache.lucene.index.IndexableField;

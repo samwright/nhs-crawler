@@ -16,6 +16,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>io.github.samwright.nhs</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -67,6 +71,32 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<images>
+								<image>
+									<name>${project.groupId}/${project.artifactId}:${project.version}</name>
+									<build>
+										<dockerFileDir>${project.build.outputDirectory}/</dockerFileDir>
+										<assembly>
+											<descriptorRef>artifact</descriptorRef>
+										</assembly>
+									</build>
+								</image>
+							</images>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

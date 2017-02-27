@@ -1,0 +1,12 @@
+version: "3.0"
+
+services:
+  crawler:
+    image: io.github.samwright.nhs/crawler:@project.version@
+    ports:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/crawler/status"]
+      interval: 1m
+      timeout: 10s
+      retries: 3

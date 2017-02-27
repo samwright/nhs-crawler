@@ -1,6 +1,6 @@
-package io.github.samwright.nhs.crawler;
+package io.github.samwright.nhs.common.crawler;
 
-import io.github.samwright.nhs.util.JobStatus;
+import io.github.samwright.nhs.common.util.JobStatus;
 import lombok.Data;
 
 @Data

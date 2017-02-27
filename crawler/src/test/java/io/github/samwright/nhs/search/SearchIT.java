@@ -1,5 +1,6 @@
 package io.github.samwright.nhs.search;
 
+import io.github.samwright.nhs.common.search.IndexingStatus;
 import io.github.samwright.nhs.util.DirHelper;
 import org.junit.Before;
 import org.junit.Test;

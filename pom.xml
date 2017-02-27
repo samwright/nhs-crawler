@@ -35,6 +35,17 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>io.github.samwright.nhs</groupId>
+				<artifactId>crawler</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.samwright.nhs</groupId>
+				<artifactId>common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>javax.inject</groupId>
 				<artifactId>javax.inject</artifactId>
 				<version>1</version>
@@ -53,6 +64,15 @@
 	</dependencyManagement>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>0.20.0</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -63,9 +83,17 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/docker</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 	<modules>
 		<module>crawler</module>
+		<module>common</module>
+		<module>itest</module>
 	</modules>
 </project>

@@ -1,5 +1,6 @@
 package io.github.samwright.nhs.crawler;
 
+import io.github.samwright.nhs.common.crawler.CrawlerStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

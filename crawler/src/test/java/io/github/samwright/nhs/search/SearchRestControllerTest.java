@@ -2,6 +2,7 @@ package io.github.samwright.nhs.search;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import io.github.samwright.nhs.common.search.IndexingStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

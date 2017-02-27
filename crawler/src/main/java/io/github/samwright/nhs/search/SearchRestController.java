@@ -1,5 +1,6 @@
 package io.github.samwright.nhs.search;
 
+import io.github.samwright.nhs.common.search.IndexingStatus;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,6 +1,7 @@
 package io.github.samwright.nhs.crawler;
 
 import edu.uci.ics.crawler4j.crawler.CrawlController;
+import io.github.samwright.nhs.common.crawler.CrawlerStatus;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
