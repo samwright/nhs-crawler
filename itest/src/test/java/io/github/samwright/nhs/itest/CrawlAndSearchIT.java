@@ -3,6 +3,7 @@ package io.github.samwright.nhs.itest;
 import com.palantir.docker.compose.DockerComposeRule;
 import com.palantir.docker.compose.connection.waiting.HealthChecks;
 import io.github.samwright.nhs.common.crawler.CrawlerStatus;
+import io.github.samwright.nhs.common.pages.PageBatch;
 import io.github.samwright.nhs.common.search.IndexingStatus;
 import org.awaitility.Awaitility;
 import org.joda.time.Duration;
@@ -24,11 +25,11 @@ public class CrawlAndSearchIT {
     @Rule
     public DockerComposeRule docker = DockerComposeRule.builder()
             .file("target/test-classes/docker-compose.yml")
-            .waitingForService("eureka", HealthChecks.toRespond2xxOverHttp(
-                    8761, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/eureka/apps/CRAWLER-APP")),
+            .waitingForService("zuul", HealthChecks.toRespond2xxOverHttp(
+                    8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/crawler/status")),
                                Duration.standardMinutes(3L))
-            .waitingForService("eureka", HealthChecks.toRespond2xxOverHttp(
-                    8761, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/eureka/apps/PAGES-APP")),
+            .waitingForService("zuul", HealthChecks.toRespond2xxOverHttp(
+                    8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/page")),
                                Duration.standardMinutes(3L))
             .build();
 
@@ -37,13 +38,12 @@ public class CrawlAndSearchIT {
 
     @Before
     public void setUp() throws Exception {
-        uri = docker.containers().container("crawler").port(8080).inFormat("http://localhost:$EXTERNAL_PORT");
+        uri = docker.containers().container("zuul").port(8080).inFormat("http://localhost:$EXTERNAL_PORT");
         restTemplate = new RestTemplateBuilder().rootUri(uri).build();
     }
 
     @Test
     public void testCrawlAndSearch() throws Exception {
-        Thread.sleep(60000);
         // Crawl until at least 10 sites have been retrieved
         assertThat(restTemplate.getForObject("/crawler/start", String.class)).isEqualTo("crawler started");
         Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> getCrawlerStatus().getRunningUrlCount() > 10);
@@ -55,6 +55,9 @@ public class CrawlAndSearchIT {
         // Search for something that will definitely be in the index
         String searchResult = search("nhs");
         assertThat(searchResult).startsWith("http://www.nhs.uk");
+
+        // Check pages can be retrieved
+        restTemplate.getForObject("/page", PageBatch.class);
     }
 
     private CrawlerStatus getCrawlerStatus() {

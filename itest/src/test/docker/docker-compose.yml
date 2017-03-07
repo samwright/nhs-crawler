@@ -49,3 +49,19 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
+
+  zuul:
+    image: io.github.samwright.nhs/zuul:@project.version@
+    ports:
+      - "8080"
+    environment:
+      - EUREKA_HOST=eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/page"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - "eureka"
+      - "pages"
+      - "crawler"

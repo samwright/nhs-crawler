@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: zuul-app
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://admin:admin@${EUREKA_HOST:127.0.0.1}:8761/eureka/
+
+zuul:
+  routes:
+    pages-app: /page
+    crawler:
+      path: /crawler/**
+      serviceId: crawler-app
+      strip-prefix: false
+    search:
+      path: /search/**
+      serviceId: crawler-app
+      strip-prefix: false
+
+ribbon:
+  eureka:
+    enabled: true

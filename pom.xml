@@ -54,6 +54,11 @@
 				<artifactId>pages</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>io.github.samwright.nhs</groupId>
+				<artifactId>zuul</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>javax.inject</groupId>
@@ -147,5 +152,6 @@
 		<module>eureka</module>
 		<module>itest</module>
 		<module>pages</module>
+		<module>zuul</module>
 	</modules>
 </project>
