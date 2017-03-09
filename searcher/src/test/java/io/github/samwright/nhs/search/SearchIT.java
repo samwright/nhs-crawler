@@ -29,7 +29,7 @@ import static org.mockito.Mockito.doReturn;
 @SpringBootTest(
         properties = {"randomiseTmpDir=true", "deleteOnExit=true",
                 "eureka.client.enabled=false", "feign.hystrix.enabled=false",
-                "crawler-app.ribbon.listOfServers:localhost:${server.port}"},
+                "searcher-app.ribbon.listOfServers:localhost:${server.port}"},
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @EnableFeignClients(clients = {CrawlerClient.class, SearchClient.class})
 @DirtiesContext
@@ -60,7 +60,6 @@ public class SearchIT {
                                         loadCrawledPage("4.json")));
 
         doReturn(batch).when(pagesClient).read();
-//        when(pagesClient.read()).thenReturn(batch).thenThrow(new RuntimeException("Should not read pages twice"));
         Thread.sleep(1000);
         assertThat(searchClient.reindex()).isEqualTo("now reindexing");
         await().atMost(10, TimeUnit.SECONDS).until(() -> searchClient.status().getSize() > 0);

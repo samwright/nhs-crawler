@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: searcher-app
+server:
+  port: 8080
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://admin:admin@${EUREKA_HOST:127.0.0.1}:8761/eureka/

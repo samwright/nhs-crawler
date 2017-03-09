@@ -12,15 +12,19 @@ eureka:
       defaultZone: http://admin:admin@${EUREKA_HOST:127.0.0.1}:8761/eureka/
 
 zuul:
+  strip-prefix: false
   routes:
-    pages-app: /page
+    page:
+      path: /page/**
+      serviceId: pages-app
+      strip-prefix: false
     crawler:
       path: /crawler/**
       serviceId: crawler-app
       strip-prefix: false
     search:
       path: /search/**
-      serviceId: crawler-app
+      serviceId: searcher-app
       strip-prefix: false
 
 ribbon:

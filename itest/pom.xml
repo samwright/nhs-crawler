@@ -43,6 +43,10 @@
 			<groupId>io.github.samwright.nhs</groupId>
 			<artifactId>zuul</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.github.samwright.nhs</groupId>
+			<artifactId>searcher</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

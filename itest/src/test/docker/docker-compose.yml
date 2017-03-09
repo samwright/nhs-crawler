@@ -12,9 +12,26 @@ services:
       - eureka.serviceUrlPollIntervalMs=1000
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/crawler/status"]
-      interval: 1m
+      interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 10
+    depends_on:
+      - "eureka"
+
+  searcher:
+    image: io.github.samwright.nhs/searcher:@project.version@
+    ports:
+      - "8080"
+    environment:
+      - EUREKA_HOST=eureka
+      - eureka.client.refresh.interval=1
+      - eureka.appinfo.replicate.interval=1
+      - eureka.serviceUrlPollIntervalMs=1000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/search/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
     depends_on:
       - "eureka"
 
@@ -29,9 +46,9 @@ services:
       - eureka.serviceUrlPollIntervalMs=1000
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/page"]
-      interval: 1m
+      interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 10
     depends_on:
       - "eureka"
 
@@ -46,9 +63,9 @@ services:
     hostname: eureka
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8761"]
-      interval: 1m
+      interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 10
 
   zuul:
     image: io.github.samwright.nhs/zuul:@project.version@
@@ -58,10 +75,11 @@ services:
       - EUREKA_HOST=eureka
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/page"]
-      interval: 1m
+      interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 10
     depends_on:
       - "eureka"
       - "pages"
       - "crawler"
+      - "searcher"

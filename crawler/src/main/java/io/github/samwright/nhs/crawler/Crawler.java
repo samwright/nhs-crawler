@@ -4,7 +4,6 @@ import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 import io.github.samwright.nhs.common.pages.Page;
 import io.github.samwright.nhs.common.pages.PagesClient;
-import io.github.samwright.nhs.search.PageIndexer;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,8 +24,6 @@ public class Crawler extends WebCrawler {
     @Autowired
     private PagesClient pagesClient;
 
-    @Autowired
-    private PageIndexer pageIndexer;
 
     @Override
     public boolean shouldVisit(edu.uci.ics.crawler4j.crawler.Page referringPage, WebURL url) {
@@ -56,9 +53,6 @@ public class Crawler extends WebCrawler {
 
             // Store the page
             pagesClient.create(crawledPage);
-
-            // Add page to be indexed soon
-            pageIndexer.indexSoon(crawledPage);
 
             log.info("Crawler visited: {}", page.getWebURL());
         } catch (Exception e) {

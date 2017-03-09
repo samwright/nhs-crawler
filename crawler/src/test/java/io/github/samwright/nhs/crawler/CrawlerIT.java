@@ -49,8 +49,5 @@ public class CrawlerIT {
         int urlCount = (int) crawlerClient.status().getRunningUrlCount();
         assertThat(urlCount).isBetween(8, 10);
         verify(pagesClient, atLeast(8)).create(any());
-
-        // Wait for the index to be automatically updated
-        await().atMost(10, TimeUnit.SECONDS).until(() -> searchClient.status().getSize() > 0);
     }
 }

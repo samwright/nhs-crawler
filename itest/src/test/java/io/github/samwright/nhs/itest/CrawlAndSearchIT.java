@@ -1,6 +1,8 @@
 package io.github.samwright.nhs.itest;
 
 import com.palantir.docker.compose.DockerComposeRule;
+import com.palantir.docker.compose.connection.Container;
+import com.palantir.docker.compose.connection.waiting.HealthCheck;
 import com.palantir.docker.compose.connection.waiting.HealthChecks;
 import io.github.samwright.nhs.common.crawler.CrawlerStatus;
 import io.github.samwright.nhs.common.pages.PageBatch;
@@ -8,7 +10,7 @@ import io.github.samwright.nhs.common.search.IndexingStatus;
 import org.awaitility.Awaitility;
 import org.joda.time.Duration;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
@@ -22,16 +24,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CrawlAndSearchIT {
 
     // todo: update docker-compose-rule when they next release and remove waitingForService call
-    @Rule
-    public DockerComposeRule docker = DockerComposeRule.builder()
+    @ClassRule
+    public static DockerComposeRule docker = DockerComposeRule.builder()
             .file("target/test-classes/docker-compose.yml")
-            .waitingForService("zuul", HealthChecks.toRespond2xxOverHttp(
-                    8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/crawler/status")),
-                               Duration.standardMinutes(3L))
-            .waitingForService("zuul", HealthChecks.toRespond2xxOverHttp(
-                    8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT/page")),
-                               Duration.standardMinutes(3L))
+            .waitingForService("zuul", toRespondTo("/crawler/status"), Duration.standardMinutes(5L))
+            .waitingForService("zuul", toRespondTo("/search/status"), Duration.standardMinutes(5L))
+            .waitingForService("zuul", toRespondTo("/page"), Duration.standardMinutes(5L))
             .build();
+
+    private static HealthCheck<Container> toRespondTo(String path) {
+        return HealthChecks.toRespond2xxOverHttp(8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT" + path));
+    }
 
     private RestTemplate restTemplate;
     private String uri;
