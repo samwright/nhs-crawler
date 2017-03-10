@@ -37,7 +37,7 @@ public class CrawlAndSearchIT {
         return HealthChecks.toRespond2xxOverHttp(8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT" + path));
     }
 
-    private ConditionFactory wait = Awaitility.await().pollInterval(10, TimeUnit.SECONDS).atMost(2, TimeUnit.MINUTES);
+    private ConditionFactory wait = Awaitility.await().pollInterval(5, TimeUnit.SECONDS).atMost(30, TimeUnit.SECONDS);
 
     private RestTemplate restTemplate;
     private String uri;

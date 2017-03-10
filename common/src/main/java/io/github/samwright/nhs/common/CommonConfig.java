@@ -1,13 +1,13 @@
 package io.github.samwright.nhs.common;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@EnableDiscoveryClient
-@EnableFeignClients
-@ConditionalOnProperty(name = "eureka.client.enabled", havingValue = "true")
+@PropertySource({"classpath:common.properties"})
+@AutoConfigureBefore(FeignConfig.class)
+@ComponentScan
 public class CommonConfig {
 }
