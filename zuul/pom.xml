@@ -10,6 +10,11 @@
 	<artifactId>zuul</artifactId>
 	<name>NHS Choices website crawler and searcher - zuul</name>
 
+	<properties>
+		<nhs.required.services>pages-app,crawler-app,searcher-app</nhs.required.services>
+		<nhs.local.services>/search/status,/crawler/status,/page</nhs.local.services>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -34,6 +39,10 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-remote-resources-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

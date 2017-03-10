@@ -7,11 +7,12 @@ then
 fi
 
 # REQUIRED_SERVICES=app1,app2,app3
-IFS=',' read -ra serviceIds <<< "$REQUIRED_SERVICES"
+IFS=',' read -ra serviceIds <<< $REQUIRED_SERVICES
 eurekaUrl=http://${EUREKA_HOST}:8761
 attempt=0
-maxAttempts=2
-intervalInSeconds=5
+maxWaitInSeconds=180
+intervalInSeconds=3
+let maxAttempts=maxWaitInSeconds/intervalInSeconds
 
 # Wait for Eureka server to come up
 while true

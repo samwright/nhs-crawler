@@ -16,6 +16,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java-version>1.8</java-version>
+		<nhs.required.services/>
+		<nhs.local.services/>
 	</properties>
 
 	<dependencies>
@@ -95,9 +97,37 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-remote-resources-plugin</artifactId>
+					<version>1.5</version>
+					<configuration>
+						<resourceBundles>
+							<resourceBundle>io.github.samwright.nhs:common:${project.version}</resourceBundle>
+						</resourceBundles>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>process</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
@@ -140,13 +170,17 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>src/main/docker</directory>
+				<directory>${project.build.directory}/maven-shared-archive-resources/filter</directory>
 				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/maven-shared-archive-resources/no-filter</directory>
 			</resource>
 		</resources>
 	</build>
@@ -156,7 +190,7 @@
 		<module>common</module>
 		<module>eureka</module>
 		<module>itest</module>
-		<module>pages</module>
+        <module>pages</module>
 		<module>searcher</module>
 		<module>zuul</module>
 	</modules>

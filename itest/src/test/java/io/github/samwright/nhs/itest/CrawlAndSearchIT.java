@@ -8,6 +8,7 @@ import io.github.samwright.nhs.common.crawler.CrawlerStatus;
 import io.github.samwright.nhs.common.pages.PageBatch;
 import io.github.samwright.nhs.common.search.IndexingStatus;
 import org.awaitility.Awaitility;
+import org.awaitility.core.ConditionFactory;
 import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -36,6 +37,8 @@ public class CrawlAndSearchIT {
         return HealthChecks.toRespond2xxOverHttp(8080, p -> p.inFormat("http://localhost:$EXTERNAL_PORT" + path));
     }
 
+    private ConditionFactory wait = Awaitility.await().pollInterval(10, TimeUnit.SECONDS).atMost(2, TimeUnit.MINUTES);
+
     private RestTemplate restTemplate;
     private String uri;
 
@@ -49,11 +52,11 @@ public class CrawlAndSearchIT {
     public void testCrawlAndSearch() throws Exception {
         // Crawl until at least 10 sites have been retrieved
         assertThat(restTemplate.getForObject("/crawler/start", String.class)).isEqualTo("crawler started");
-        Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> getCrawlerStatus().getRunningUrlCount() > 10);
+        wait.until(() -> getCrawlerStatus().getRunningUrlCount() > 10);
 
         // Reindex
         assertThat(restTemplate.getForObject("/search/reindex", String.class)).isEqualTo("now reindexing");
-        Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> getIndexerStatus().getSize() > 0);
+        wait.until(() -> getIndexerStatus().getSize() > 0);
 
         // Search for something that will definitely be in the index
         String searchResult = search("nhs");
