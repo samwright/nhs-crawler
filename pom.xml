@@ -10,7 +10,7 @@
 	<groupId>io.github.samwright.nhs</groupId>
 	<artifactId>nhs-crawler-parent</artifactId>
 	<version>0.2.0-SNAPSHOT</version>
-	<name>NHS Choices website crawler and searcher - parent pom</name>
+	<name>NHS Choices website crawler and searcher</name>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -38,32 +38,32 @@
 		<dependencies>
 			<dependency>
 				<groupId>io.github.samwright.nhs</groupId>
-				<artifactId>crawler</artifactId>
+				<artifactId>nhs-crawler</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.samwright.nhs</groupId>
-				<artifactId>searcher</artifactId>
+				<artifactId>nhs-searcher</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.samwright.nhs</groupId>
-				<artifactId>common</artifactId>
+				<artifactId>nhs-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.samwright.nhs</groupId>
-				<artifactId>eureka</artifactId>
+				<artifactId>nhs-eureka</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.samwright.nhs</groupId>
-				<artifactId>pages</artifactId>
+				<artifactId>nhs-pages</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.samwright.nhs</groupId>
-				<artifactId>zuul</artifactId>
+				<artifactId>nhs-zuul</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -117,7 +117,7 @@
 					<version>1.5</version>
 					<configuration>
 						<resourceBundles>
-							<resourceBundle>io.github.samwright.nhs:common:${project.version}</resourceBundle>
+							<resourceBundle>io.github.samwright.nhs:nhs-common:${project.version}</resourceBundle>
 						</resourceBundles>
 					</configuration>
 					<executions>
@@ -186,12 +186,12 @@
 	</build>
 
 	<modules>
-		<module>crawler</module>
-		<module>common</module>
-		<module>eureka</module>
-		<module>itest</module>
-        <module>pages</module>
-		<module>searcher</module>
-		<module>zuul</module>
+		<module>nhs-crawler</module>
+		<module>nhs-common</module>
+		<module>nhs-eureka</module>
+		<module>nhs-itest</module>
+        <module>nhs-pages</module>
+		<module>nhs-searcher</module>
+		<module>nhs-zuul</module>
 	</modules>
 </project>

@@ -1,0 +1,24 @@
+zuul:
+  strip-prefix: false
+  routes:
+    page:
+      path: /page/**
+      serviceId: nhs-pages-app
+      strip-prefix: false
+    crawler:
+      path: /crawler/**
+      serviceId: nhs-crawler-app
+      strip-prefix: false
+    search:
+      path: /search/**
+      serviceId: nhs-searcher-app
+      strip-prefix: false
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+
+ribbon:
+  eureka:
+    enabled: true
+
+
