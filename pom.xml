@@ -129,29 +129,38 @@
 					</executions>
 				</plugin>
 				<plugin>
+					<!--
+                    For modules using docker-maven-plugin, this will:
+                     - build the docker image during the package phase
+                     - push the docker image to the docker store during the deploy phase
+                    -->
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
 					<version>0.20.0</version>
+					<extensions>true</extensions>
+					<configuration>
+						<images>
+							<image>
+								<name>samwright/${project.artifactId}:${project.version}</name>
+								<build>
+									<dockerFileDir>${project.build.outputDirectory}/</dockerFileDir>
+									<assembly>
+										<descriptorRef>artifact</descriptorRef>
+									</assembly>
+								</build>
+							</image>
+						</images>
+					</configuration>
 					<executions>
 						<execution>
-							<id>build-image</id>
+							<id>docker-build</id>
+							<goals><goal>build</goal></goals>
 							<phase>package</phase>
-							<goals>
-								<goal>build</goal>
-							</goals>
-							<configuration>
-								<images>
-									<image>
-										<name>${project.groupId}/${project.artifactId}:${project.version}</name>
-										<build>
-											<dockerFileDir>${project.build.outputDirectory}/</dockerFileDir>
-											<assembly>
-												<descriptorRef>artifact</descriptorRef>
-											</assembly>
-										</build>
-									</image>
-								</images>
-							</configuration>
+						</execution>
+						<execution>
+							<id>docker-push</id>
+							<goals><goal>push</goal></goals>
+							<phase>deploy</phase>
 						</execution>
 					</executions>
 				</plugin>
@@ -167,6 +176,13 @@
 					<compilerArgs>
 						<arg>-parameters</arg>
 					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 		</plugins>

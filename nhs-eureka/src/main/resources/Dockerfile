@@ -1,7 +1,9 @@
-FROM java:8
+FROM openjdk:8-alpine
 VOLUME /tmp
-ADD maven/@project.build.finalName@.jar app.jar
-RUN bash -c 'touch /app.jar'
+COPY maven/@project.build.finalName@.jar app.jar
+RUN apk add --update curl && \
+    rm -rf /var/cache/apk/* && \
+    touch /app.jar
 EXPOSE 8761
 ENTRYPOINT ["java","-jar","/app.jar"]
 
