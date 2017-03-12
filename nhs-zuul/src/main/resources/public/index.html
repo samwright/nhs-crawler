@@ -68,23 +68,22 @@
             "${java.io.tmpdir}/io.github.samwright.nhs${randomLong}". Useful for testing.
         </li>
         <li>
-            deleteOnExit - if true, delete the data directory on exitting the app (default = false)
+            deleteOnExit - if true, delete the data directory on exiting the app (default = false)
         </li>
         <li>
             indexIntervalSeconds - the time to wait before adding newly-crawled pages to the index.
         </li>
     </ul>
 </p>
-<p>
-    <h4>Command-line usage: java -jar nhs-crawler-0.2.0-SNAPSHOT.jar [--option=value]...</h4>
 
-</p>
 <h5>Author: Sam Wright</h5>
 <h5>
     Uses:
     <a href="https://lucene.apache.org/">Apache Lucene</a>,
     <a href="https://projects.spring.io/spring-boot/">Spring Boot</a>,
+    <a href="http://projects.spring.io/spring-cloud/">Spring Cloud (Eureka, Feign, Zuul)</a>,
     <a href="https://github.com/yasserg/crawler4j">Crawler4J</a>,
-    <a href="https://jsoup.org/">jsoup</a>.
+    <a href="https://jsoup.org/">jsoup</a>,
+    <a href="https://www.docker.com/">Docker</a>.
 </h5>
 </html>
