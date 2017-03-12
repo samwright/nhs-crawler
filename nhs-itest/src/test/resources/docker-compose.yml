@@ -3,50 +3,22 @@ version: "3.0"
 services:
   crawler:
     image: samwright/nhs-crawler:@project.version@
-    expose:
-      - "8080"
     environment:
       - EUREKA_HOST=eureka
-    healthcheck:
-      test: ["CMD", "/healthcheck.sh"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   searcher:
     image: samwright/nhs-searcher:@project.version@
-    expose:
-      - "8080"
     environment:
       - EUREKA_HOST=eureka
-    healthcheck:
-      test: ["CMD", "/healthcheck.sh"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   pages:
     image: samwright/nhs-pages:@project.version@
-    expose:
-      - "8080"
     environment:
       - EUREKA_HOST=eureka
-    healthcheck:
-      test: ["CMD", "/healthcheck.sh"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   eureka:
     image: samwright/nhs-eureka:@project.version@
-    expose:
-      - "8761"
     hostname: eureka
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   zuul:
     image: samwright/nhs-zuul:@project.version@
@@ -54,8 +26,3 @@ services:
       - "127.0.0.1:8080:8080"
     environment:
       - EUREKA_HOST=eureka
-    healthcheck:
-      test: ["CMD", "/healthcheck.sh"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
