@@ -9,7 +9,7 @@
 
 	<groupId>io.github.samwright.nhs</groupId>
 	<artifactId>nhs-crawler-parent</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>NHS Choices website crawler and searcher</name>
 	<packaging>pom</packaging>
 
