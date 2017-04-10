@@ -1,5 +1,6 @@
 zuul:
   strip-prefix: false
+  ignoredServices: '*'
   routes:
     page:
       path: /page/**
@@ -13,6 +14,9 @@ zuul:
       path: /search/**
       serviceId: nhs-searcher-app
       strip-prefix: false
+    react-ui:
+      path: /**
+      serviceId: nhs-frontend-react-app
   host:
     connect-timeout-millis: 10000
     socket-timeout-millis: 60000

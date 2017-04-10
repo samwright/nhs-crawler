@@ -125,6 +125,35 @@
 							<goals>
 								<goal>process</goal>
 							</goals>
+							<configuration>
+								<attachToMain>false</attachToMain>
+								<attachToTest>false</attachToTest>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+					<executions>
+						<execution>
+							<id>copy-common-resources</id>
+							<phase>generate-resources</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${basedir}/target/classes</outputDirectory>
+								<resources>
+									<resource>
+										<directory>target/maven-shared-archive-resources/filter</directory>
+										<filtering>true</filtering>
+									</resource>
+									<resource>
+										<directory>target/maven-shared-archive-resources/no-filter</directory>
+									</resource>
+								</resources>
+							</configuration>
 						</execution>
 					</executions>
 				</plugin>
@@ -186,25 +215,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>${project.build.directory}/maven-shared-archive-resources/filter</directory>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>${project.build.directory}/maven-shared-archive-resources/no-filter</directory>
-			</resource>
-		</resources>
 	</build>
 
 	<modules>
 		<module>nhs-crawler</module>
 		<module>nhs-common</module>
 		<module>nhs-eureka</module>
+		<module>nhs-frontend-react</module>
 		<module>nhs-itest</module>
         <module>nhs-pages</module>
 		<module>nhs-searcher</module>

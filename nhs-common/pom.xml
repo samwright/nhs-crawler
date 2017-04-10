@@ -38,20 +38,22 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-remote-resources-plugin</artifactId>
+				<configuration>
+					<resourceBundles combine.self="override"/>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>bundle</goal>
 						</goals>
+						<configuration>
+							<includes>
+								<include>filter/**</include>
+								<include>no-filter/**</include>
+							</includes>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<includes>
-						<include>filter/**</include>
-						<include>no-filter/**</include>
-					</includes>
-					<resourceBundles/>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

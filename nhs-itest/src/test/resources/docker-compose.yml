@@ -3,26 +3,21 @@ version: "3.0"
 services:
   crawler:
     image: samwright/nhs-crawler:@project.version@
-    environment:
-      - EUREKA_HOST=eureka
-
-  searcher:
-    image: samwright/nhs-searcher:@project.version@
-    environment:
-      - EUREKA_HOST=eureka
-
-  pages:
-    image: samwright/nhs-pages:@project.version@
-    environment:
-      - EUREKA_HOST=eureka
 
   eureka:
     image: samwright/nhs-eureka:@project.version@
     hostname: eureka
 
+  frontend-react:
+    image: samwright/nhs-frontend-react:@project.version@
+
+  pages:
+    image: samwright/nhs-pages:@project.version@
+
+  searcher:
+    image: samwright/nhs-searcher:@project.version@
+
   zuul:
     image: samwright/nhs-zuul:@project.version@
     ports:
-      - "127.0.0.1:8080:8080"
-    environment:
-      - EUREKA_HOST=eureka
+      - "8080:8080"

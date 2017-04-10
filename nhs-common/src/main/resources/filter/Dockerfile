@@ -7,7 +7,7 @@ RUN apk add --update curl bash && rm -rf /var/cache/apk/* && \
     chmod +x /wait-for-eureka.sh && \
     unzip -p /app.jar BOOT-INF/classes/healthcheck.sh | tr -d '\015' > /healthcheck.sh && \
     chmod +x healthcheck.sh
-ENV REQUIRED_SERVICES="@nhs.required.services@" LOCAL_SERVICES="@nhs.local.services@"
+ENV REQUIRED_SERVICES="@nhs.required.services@" LOCAL_SERVICES="@nhs.local.services@" EUREKA_HOST="eureka"
 HEALTHCHECK --interval=15s --timeout=30s --retries=10 CMD /healthcheck.sh
 EXPOSE 8080
 ENTRYPOINT /wait-for-eureka.sh && java -jar /app.jar

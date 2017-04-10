@@ -11,7 +11,7 @@
 	<name>Microservice: Zuul server (gateway service/reverse proxy)</name>
 
 	<properties>
-		<nhs.required.services>nhs-pages-app,nhs-crawler-app,nhs-searcher-app</nhs.required.services>
+		<nhs.required.services>nhs-pages-app,nhs-crawler-app,nhs-searcher-app,nhs-frontend-react-app</nhs.required.services>
 		<nhs.local.services>/search/status,/crawler/status,/page</nhs.local.services>
 	</properties>
 
