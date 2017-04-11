@@ -1,19 +1,5 @@
 package io.github.samwright.nhs.pages;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.samwright.nhs.common.pages.Page;
-import io.github.samwright.nhs.common.pages.PageBatch;
-import io.github.samwright.nhs.common.util.DirHelper;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -25,6 +11,23 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.github.samwright.nhs.common.pages.Page;
+import io.github.samwright.nhs.common.pages.PageBatch;
+import io.github.samwright.nhs.common.util.DirHelper;
+import lombok.SneakyThrows;
+
 /**
  * Class to read and write {@link Page} on the filesystem.
  * <p/>
@@ -32,7 +35,7 @@ import java.util.stream.Collectors;
  * characters with an underscore, followed by '.json'.
  */
 @RestController
-@RequestMapping("/page")
+@RequestMapping("/api/page")
 public class PagesRestController {
     private static final String TEMP_FILE_PREFIX = "temp-";
     private static final int BATCH_SIZE = 20;

@@ -12,7 +12,7 @@
 
 	<properties>
 		<nhs.required.services>nhs-pages-app</nhs.required.services>
-		<nhs.local.services>/crawler/status</nhs.local.services>
+		<nhs.local.services>/api/crawler/status</nhs.local.services>
 	</properties>
 
 	<dependencies>

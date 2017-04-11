@@ -5,33 +5,33 @@
     <h4>The API</h4>
     <ul>
         <li>
-            <a href="/crawler/start">/crawler/start</a> to start crawling the website. This will
+            <a href="/api/crawler/start">/api/crawler/start</a> to start crawling the website. This will
             take days to complete. You can stop the crawler and/or restart the
             app, then start the crawler again and it will resume from where it
-            stopped. See the log output or <a href="/crawler/status">/crawler/status</a> to monitor its
+            stopped. See the log output or <a href="/api/crawler/status">/api/crawler/status</a> to monitor its
             progress. Newly-crawled pages are added to the index for searching every 10 seconds.
         </li>
         <li>
-            <a href="/crawler/status">/crawler/status</a> to get the status of the crawler (as a json string
+            <a href="/api/crawler/status">/api/crawler/status</a> to get the status of the crawler (as a json string
             of io.github.samwright.nhs.api.crawler.CrawlerStatus).
         </li>
-        <li><a href="/crawler/stop">/crawler/stop</a> to stop the crawler if it was running</li>
+        <li><a href="/api/crawler/stop">/api/crawler/stop</a> to stop the crawler if it was running</li>
         <li>
-            <a href="/search/reindex">/search/reindex</a> to recreate the index from the crawled pages on disk. This
+            <a href="/api/search/reindex">/api/search/reindex</a> to recreate the index from the crawled pages on disk. This
             can be called at any time, even while the crawler is running. This takes about a minute to complete, and
-            its progress can be monitored at <a href="/search/status">/search/status</a>. You only need to do this if
+            its progress can be monitored at <a href="/api/search/status">/api/search/status</a>. You only need to do this if
             you copy json files yourself into the pages directory.
         </li>
         <li>
-            <a href="/search/status">/search/status</a> to get the status of the indexer (as a json string of
+            <a href="/api/search/status">/api/search/status</a> to get the status of the indexer (as a json string of
             io.github.samwright.nhs.api.search.IndexingStatus).
         </li>
         <li>
-            <a href="/search?q=mumps">/search?q=mumps</a> to search through the indexed pages for 'mumps' to get the
+            <a href="/api/search?q=mumps">/api/search?q=mumps</a> to search through the indexed pages for 'mumps' to get the
             best match, and return its NHS Choices URL.
         </li>
         <li>
-            <a href="/search/multiple?q=mumps">/search/multiple?q=mumps</a> to search through the indexed pages for
+            <a href="/api/search/multiple?q=mumps">/api/search/multiple?q=mumps</a> to search through the indexed pages for
             'mumps' to get multiple top matches (at most 10), and return them in order in a json string of a
             list of io.github.samwright.nhs.common.search.SearchResult.
         </li>
@@ -40,13 +40,13 @@
 <p>
     <h4>Quickstart</h4>
     <ol>
-        <li>Click <a href="/crawler/start">/crawler/start</a></li>
+        <li>Click <a href="/api/crawler/start">/api/crawler/start</a></li>
         <li>
-            Click <a href="/search?q=mumps">/search?q=mumps</a> and try different queries. Newly-crawled pages will
+            Click <a href="/api/search?q=mumps">/api/search?q=mumps</a> and try different queries. Newly-crawled pages will
             be searchable after at most a 10 second delay.
         </li>
         <li>
-            Restart the app at any time and click <a href="/crawler/start">/crawler/start</a> to continue crawling
+            Restart the app at any time and click <a href="/api/crawler/start">/api/crawler/start</a> to continue crawling
             from where it left off.
         </li>
     </ol>
@@ -82,7 +82,7 @@
     <a href="https://lucene.apache.org/">Apache Lucene</a>,
     <a href="https://projects.spring.io/spring-boot/">Spring Boot</a>,
     <a href="http://projects.spring.io/spring-cloud/">Spring Cloud (Eureka, Feign, Zuul)</a>,
-    <a href="https://github.com/yasserg/crawler4j">Crawler4J</a>,
+    <a href="https://github.com/yasserg/api/crawler4j">Crawler4J</a>,
     <a href="https://jsoup.org/">jsoup</a>,
     <a href="https://www.docker.com/">Docker</a>.
 </h5>

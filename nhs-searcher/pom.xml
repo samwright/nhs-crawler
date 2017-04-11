@@ -13,7 +13,7 @@
 	<properties>
 		<lucene.version>6.4.0</lucene.version>
 		<nhs.required.services>nhs-pages-app</nhs.required.services>
-		<nhs.local.services>/search/status</nhs.local.services>
+		<nhs.local.services>/api/search/status</nhs.local.services>
 	</properties>
 
 	<dependencies>

@@ -11,7 +11,7 @@
 	<name>Microservice: Repository for crawled web pages</name>
 
 	<properties>
-		<nhs.local.services>/page</nhs.local.services>
+		<nhs.local.services>/api/page</nhs.local.services>
 	</properties>
 
 	<dependencies>

@@ -3,15 +3,15 @@ zuul:
   ignoredServices: '*'
   routes:
     page:
-      path: /page/**
+      path: /api/page/**
       serviceId: nhs-pages-app
       strip-prefix: false
     crawler:
-      path: /crawler/**
+      path: /api/crawler/**
       serviceId: nhs-crawler-app
       strip-prefix: false
     search:
-      path: /search/**
+      path: /api/search/**
       serviceId: nhs-searcher-app
       strip-prefix: false
     react-ui:

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "nhs-pages-app", path = "/page")
+@FeignClient(name = "nhs-pages-app", path = "/api/page")
 public interface PagesClient {
     @RequestMapping(method = RequestMethod.PUT)
     void create(@RequestBody Page page);

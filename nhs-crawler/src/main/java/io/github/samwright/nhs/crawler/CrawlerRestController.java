@@ -1,15 +1,18 @@
 package io.github.samwright.nhs.crawler;
 
-import io.github.samwright.nhs.common.crawler.CrawlerStatus;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PreDestroy;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import io.github.samwright.nhs.common.crawler.CrawlerStatus;
 
 @RestController
+@RequestMapping("/api/crawler")
 public class CrawlerRestController {
     private final ExecutorService runExecutor = Executors.newSingleThreadExecutor();
     private final ExecutorService shutdownExecutor = Executors.newSingleThreadExecutor();
@@ -17,7 +20,7 @@ public class CrawlerRestController {
     @Autowired
     private CrawlerRunner runner;
 
-    @RequestMapping("/crawler/start")
+    @RequestMapping("/start")
     public synchronized String start() {
         if (runner.getStatus().isRunning()) {
             return "already running";
@@ -27,7 +30,7 @@ public class CrawlerRestController {
         }
     }
 
-    @RequestMapping("/crawler/stop")
+    @RequestMapping("/stop")
     public synchronized String stop() {
         if (runner.getStatus().isRunning()) {
             shutdownExecutor.execute(runner::stop);
@@ -37,7 +40,7 @@ public class CrawlerRestController {
         }
     }
 
-    @RequestMapping("/crawler/status")
+    @RequestMapping("/status")
     public CrawlerStatus status() {
         return runner.getStatus();
     }
